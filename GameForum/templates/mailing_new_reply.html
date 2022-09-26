@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ответ на ваш пост</title>
+</head>
+<body>
+    {% if not reply.accepted %}
+        <h2>Привет! Кто-то ответил на твой пост {{ post.title }}!</h2>
+        <p>Cсылка на ответ: <a href="http://127.0.0.1:8000/posts/{{ post.pk }}">{{ reply.text|truncatechars:30 }}</a></p>
+    {% else %}
+        <h2>Привет! Твой отклик "{{ reply.text|truncatechars:30 }}" на пост <a href="http://127.0.0.1:8000/posts/{{ post.pk }}">{{ post.title|truncatewords:3 }}</a> принят</h2>
+    {% endif %}
+</body>
+</html>

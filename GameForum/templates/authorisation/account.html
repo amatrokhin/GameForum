@@ -1,0 +1,30 @@
+{% extends "flatpages/default.html" %}
+
+{% block title %}
+Personal space
+{% endblock title %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<br>
+
+<div class="container">
+    <a href="for_me_replies/">Отклики на ваши посты</a>
+    <br>
+    <br>
+
+    <a href="my_posts/">Ваши посты</a>
+    <br>
+    <br>
+
+    <a href="my_replies/">Ваши отклики</a>
+    <br>
+    <br>
+
+
+
+</div>
+
+<button> <a href="/logout/">Выйти</a> </button>
+
+{% endblock %}

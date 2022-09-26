@@ -1,0 +1,99 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_tags %}
+
+{% block title %}
+My replies
+{% endblock title %}
+
+{% block content %}
+    <h1>Поиск откликов</h1>
+    <h3> Количество постов на странице: {{ replies_self|length }} </h3>
+    <br>
+
+    {# Add form that has field that will be send in query #}
+    <form action="" method="get" align="center">
+
+        Текст содержит: {{ filterset.form.text__icontains }}
+        <br>
+        <br>
+
+        Отклик для поста: {{ filterset.form.post__title__icontains }}
+        <br>
+        <br>
+
+        {{ filterset.form.time_in__gt.label }}: {{ filterset.form.time_in__gt }}
+
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-7" align="right">
+                <input type="submit" value="Найти" />
+                &emsp;&emsp;&emsp;&emsp;
+            </div>
+        </div>
+
+    </form>
+
+    <br>
+    {% if replies_self %}
+        <table class="table">
+	        <col style="width:15%">
+	        <col style="width:15%">
+            <col style="width:70%">
+            <thead>
+            <tr>
+                <td>К посту</td>
+                <td>Дата публикации</td>
+                <td>Предпросмотр</td>
+            </tr>
+            </thead>
+
+            {% for reply in replies_self %}
+                <tr style="height:50px">
+                    <td><a href='/posts/{{ reply.post.pk }}'>{{ reply.post.title }}</a></td>
+                    <td>{{ reply.time_in|date:'d M Y' }}</td>
+                    <td>{{ reply.text }}</td>
+                    <td>
+                        {% if not reply.accepted %}
+                        <button> <a href="/personal/reply_{{ reply.pk }}/delete/">Удалить</a> </button>
+                        Не принят
+                        {% else %}
+                        <button> <a href="/personal/reply_{{ reply.pk }}/delete/">Удалить</a> </button>
+                        Принят
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Пока никаких откликов</h2>
+    {% endif %}
+
+    {# Add pagination #}
+
+    {# Info of previous pages #}
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Info of current page #}
+    {{ page_obj.number }}
+
+    {# Info of next pages #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+<hr>
+{% endblock content %}

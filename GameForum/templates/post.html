@@ -1,0 +1,49 @@
+<!--  Inherit from default.html -->
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Post
+{% endblock title %}
+
+<!-- Output a post that was sent to url -->
+{% block content %}
+
+    {{ post.as_p }}
+
+    <h1>{{ post.title }}</h1>
+    <h4>Опубликован: {{ post.time_in|date:'d M Y' }}</h4>
+
+    <h5>Категория: {{ post.get_category_display }}</h5>
+
+    <h5>Автор: {{ post.author }}</h5>
+
+
+    <style>
+    .text-justify {
+     text-align: justify; /* text-align by page width */
+    }
+    </style>
+    <div class="text-justify", style="white-space: pre-line">
+
+        {{ post.content|safe }}
+    </div>
+    <hr>
+
+    {% if request.user == post.author %}
+    <div>
+        <a href="/posts/{{ post.pk }}/update/">Редактировать</a>
+        &emsp;&emsp;&emsp;&emsp;
+        <a href="/posts/{{ post.pk }}/delete/">Удалить</a>
+    </div>
+
+    {% else %}
+    <div>
+        <a href="reply/create/">Написать отклик</a>
+    </div>
+    {% endif %}
+
+    <hr>
+    <br>
+{% endblock content %}
+

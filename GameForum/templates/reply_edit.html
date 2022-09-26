@@ -1,0 +1,20 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+<h1>Параметры отклика</h1>
+<hr>
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    Текст:
+    <br>
+    {{ form.text }}
+    <br><br>
+
+    <input type="submit" value="Save" />
+
+    <hr>
+</form>
+{% endblock content %}
